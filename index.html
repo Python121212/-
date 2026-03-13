@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>殺せんせーAI教室</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; }
+        #koro-face { width: 150px; height: 150px; background-color: #FFF47D; border-radius: 50%; margin: 20px auto; transition: 0.5s; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="koro-face" onclick="clickFace()"></div>
+    <div id="display-area">ヌルフフフ、準備はいいですか？</div>
+    
+    <button onclick="startListening()">授業中(話す)</button>
+    <button onclick="startBreak()">休憩時間(ゲーム)</button>
+
+    <script>
+        const face = document.getElementById('koro-face');
+        const display = document.getElementById('display-area');
+
+        // 音声認識
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'ja-JP';
+
+        function startListening() {
+            display.innerText = "ヌルフフフ、聴いていますよ…";
+            recognition.start();
+        }
+
+        recognition.onresult = async (event) => {
+            const text = event.results[0][0].transcript;
+            display.innerText = "あなた: " + text;
+            
+            // 【重要】ここに安全な方法でAPIを叩く処理を入れます
+            // ※キーはここに直接書かず、本来はサーバー経由で読み込みます
+            speak("ヌルフフフ、それは面白いですねぇ！"); 
+            face.style.backgroundColor = "#FFB74D"; // 笑顔
+        };
+
+        function speak(text) {
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.pitch = 1.6; utter.rate = 1.2;
+            window.speechSynthesis.speak(utter);
+        }
+
+        // 暗殺ゲーム
+        function startBreak() {
+            display.innerText = "暗殺の時間です！先生をクリック！";
+            face.onclick = () => {
+                face.style.backgroundColor = "#9575CD"; // 怒り
+                speak("にゅやっ！？速いですねぇ！");
+                setTimeout(() => { face.style.backgroundColor = "#FFF47D"; }, 1000);
+            };
+        }
+    </script>
+</body>
+</html>
+
