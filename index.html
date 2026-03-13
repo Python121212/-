@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>殺せんせーAI</title></head>
+<head><meta charset="UTF-8"><title>殺せんせーAI教室</title></head>
 <body>
     <div id="koro-face" style="width:150px;height:150px;background:#FFF47D;border-radius:50%;margin:20px auto;"></div>
     <div id="display-area">ヌルフフフ、準備はいいですか？</div>
@@ -15,7 +15,7 @@
             const userText = event.results[0][0].transcript;
             display.innerText = "考え中……";
             
-            // サーバーを経由してAPIを叩く（キーはここで隠れる！）
+            // 自分のサーバーのAPIルートを叩く
             const response = await fetch('/api/chat', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
