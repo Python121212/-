@@ -1,9 +1,6 @@
-// api/chat.js (Vercelのサーバーレス関数)
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
-
   const { message } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY; // Vercelの「環境変数」から読み込む
+  const apiKey = process.env.GEMINI_API_KEY;
 
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
     method: "POST",
