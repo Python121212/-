@@ -1,39 +1,27 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head><meta charset="UTF-8"><title>殺せんせーAI教室</title></head>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>殺せんせーAI - カメラテスト</title>
+</head>
 <body>
-    <div id="koro-face" style="width:150px;height:150px;background:#FFF47D;border-radius:50%;margin:20px auto;"></div>
-    <div id="display-area">ヌルフフフ、準備はいいですか？</div>
-    <button onclick="startListening()">会話する</button>
+    <video id="video" autoplay playsinline style="width: 100%; border: 2px solid yellow;"></returns>
 
     <script>
-        const display = document.getElementById('display-area');
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'ja-JP';
-
-        recognition.onresult = async (event) => {
-            const userText = event.results[0][0].transcript;
-            display.innerText = "考え中……";
-            
-            // 自分のサーバーのAPIルートを叩く
-            const response = await fetch('/api/chat', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userText })
-            });
-            const data = await response.json();
-            const aiText = data.candidates[0].content.parts[0].text;
-            
-            display.innerText = "殺せんせー: " + aiText;
-            speak(aiText);
-        };
-
-        function startListening() { recognition.start(); }
-        function speak(text) {
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.pitch = 1.6; utter.rate = 1.2;
-            window.speechSynthesis.speak(utter);
+        // カメラ映像を起動して表示する関数
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("カメラへのアクセスを許可してください: ", err);
+                alert("カメラが見つかりません。権限を確認してください。");
+            }
         }
+
+        // ページ読み込み時にカメラを起動
+        startCamera();
     </script>
 </body>
 </html>
